@@ -1,3 +1,4 @@
+import { PropsWithChildren } from "react";
 
 
 
@@ -42,4 +43,17 @@ export interface PositionDecoratorOptions {
     style?: React.CSSProperties;
     zIndex?: number;
     className?: string;
+}
+
+export interface SchemaToolbarProps extends PropsWithChildren {
+    title?: string | string[];
+    draggable?: boolean;
+    resizable?: boolean;
+    // initializer?: string | SchemaInitializer<any> | false;
+    // settings?: string | SchemaSettings<any> | false;
+    /**
+     * @default true
+     */
+    showBorder?: boolean;
+    showBackground?: boolean;
 }

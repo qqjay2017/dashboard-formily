@@ -1,12 +1,13 @@
 import { PropsWithChildren, useMemo, useRef } from "react"
 import { BlockItemError } from "./common/BlockItemError"
-import { PositionDecoratorOptions } from "./types"
+import { PositionDecoratorOptions, SchemaToolbarProps } from "./types"
 import { useDashboardComponent, useDashboardRoot } from "./hooks"
 import { sizeFormat } from "./utils"
-
+import { DragOutlined, } from '@ant-design/icons';
 import { Rnd } from "react-rnd";
 import { useField, useFieldSchema } from "@formily/react"
-
+import { DragHandler } from "./common/DragHandler"
+import { createStyles } from '../core'
 
 const resizeHandleStyles1: React.CSSProperties = {
     height: '7px',
@@ -26,10 +27,162 @@ const resizeHandleStyles2: React.CSSProperties = {
     border: '3px solid var(--colorSettings)',
     borderRadius: '5px'
 }
+
+
+const useRndStyle = createStyles(({ css, }, { toolbarActive }: { toolbarActive?: boolean }) => {
+    return css`
+     border-width:1px;
+      border-style:solid;
+      border-color: ${toolbarActive ? "var( --colorBorderSettingsHover )" : "transparent"}; 
+      &:hover {
+        ${toolbarActive ? "" : " border-radius:5px; border-style:dashed; border-color:var( --colorBorderSettingsHover )"
+        }
+       ;
+      }
+    `
+})
 // TODO 编辑++
 export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecoratorOptions>) => {
-    console.log(props, 'props')
-    return <div>123PositionDecoratorHandle</div>
+
+    const { children, x = 0, y = 0, w = 0, h = 0, zIndex = 2, style, padding = 12, className, ...otherProps } = props
+    const { colWidth, rowHeight } = useDashboardRoot()
+
+    const { setHandleIds, handleIds } = useDashboardComponent()
+    const field = useField()
+    const fieldSchema = useFieldSchema();
+    const eid = field.address.toString();
+    const dragHandleClassName = `dragHandle-${eid}`.replace(/\./g, '-')
+
+    const {
+        draggable = true,
+        resizable = true,
+    } = { ...props, ...(fieldSchema['x-toolbar-props'] || {}) } as SchemaToolbarProps;
+
+    const toolbarActive = handleIds && handleIds.includes(eid)
+
+    const width = sizeFormat(colWidth * w);
+    const height = sizeFormat(rowHeight * h);
+    const rndStyle = useRndStyle({
+        toolbarActive
+    })
+
+
+    const styleMemo = useMemo(() => {
+        const s: React.CSSProperties = {
+            ...style,
+        };
+        if (zIndex) {
+            s.zIndex = zIndex;
+        }
+        if (padding) {
+            s.padding = Array.isArray(padding)
+                ? padding.map((p) => (p || 0) + "px").join(" ")
+                : padding;
+        }
+
+        return s;
+    }, [padding, style, zIndex]);
+
+
+    const dragElement = useMemo(() => {
+        if (!toolbarActive || !draggable) return null;
+        return (
+            <div style={{
+                position: 'absolute',
+                right: 4,
+                top: 4,
+                zIndex: 10
+            }}>
+                <DragHandler className={dragHandleClassName}>
+                    <DragOutlined role="button" />
+                </DragHandler>
+            </div>
+        );
+    }, [draggable, dragHandleClassName, toolbarActive]);
+
+    const enableResizing = resizable && toolbarActive
+    return <Rnd
+        onMouseDown={() => {
+            setHandleIds && setHandleIds((oldIds) => {
+                if (oldIds.includes(eid)) {
+                    return []
+                } else {
+                    return [eid]
+                }
+            })
+        }}
+        dragHandleClassName={dragHandleClassName}
+
+        bounds="parent"
+        className={rndStyle.styles}
+        position={{
+            x: sizeFormat(x * colWidth),
+            y: sizeFormat(y * rowHeight),
+        }}
+        size={{
+            width,
+            height,
+        }}
+        style={{
+            zIndex,
+            padding: styleMemo.padding,
+        }}
+        disableDragging={!draggable}
+        enableResizing={{
+            bottom: enableResizing,
+            left: enableResizing,
+            right: enableResizing,
+            top: enableResizing,
+            bottomLeft: false,
+            bottomRight: false,
+            topLeft: false,
+            topRight: false,
+        }}
+        resizeHandleStyles={{
+            bottom: { ...resizeHandleStyles1, cursor: 's-resize' },
+            top: { ...resizeHandleStyles1, transform: 'translate(-50%, 1px )', cursor: 'n-resize' },
+            right: { ...resizeHandleStyles2, cursor: 'e-resize' },
+            left: { ...resizeHandleStyles2, transform: 'translate( 1px , -50% )', cursor: 'w-resize' },
+
+        }}
+
+
+        onDragStop={(_, { x, y }) => {
+            console.log(x)
+            // dn.shallowMerge({
+            //     "x-uid": "aabbcc",
+            //     "x-decorator-props": {
+            //         ...dn.model.decoratorProps,
+            //         x: sizeFormat(x / colWidth),
+            //         y: sizeFormat((y) / rowHeight)
+            //     }
+            // })
+
+
+        }}
+        onResizeStop={(_, _d, ref: any) => {
+            const newW = sizeFormat(parseInt(ref.style.width || 0, 10) / colWidth);
+            const newH = sizeFormat(parseInt(ref.style.height || 0, 10) / rowHeight);
+
+            const isLeft = _d === 'left'
+            const isTop = _d === 'top'
+            // const offsetX = dn.model.decoratorProps.w - newW;
+            // const offsetY = dn.model.decoratorProps.h - newH;
+            // dn.shallowMerge({
+            //     "x-uid": "aabbcc",
+            //     "x-decorator-props": {
+            //         ...dn.model.decoratorProps,
+            //         w: newW,
+            //         h: newH,
+            //         x: isLeft ? dn.model.decoratorProps.x + offsetX : dn.model.decoratorProps.x,
+            //         y: isTop ? dn.model.decoratorProps.y + offsetY : dn.model.decoratorProps.y,
+            //     }
+            // })
+        }}
+    >
+        {dragElement}
+        {children}
+    </Rnd>
 
 }
 

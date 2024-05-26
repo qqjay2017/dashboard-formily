@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.7",
     "@formily/react": "^2.3.1",
     "ahooks": "^3.8.0",
+    "antd": "^5.17.3",
+    "antd-style": "^3.6.2",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,5 +1,5 @@
 import { IRecursionFieldProps, ISchemaFieldProps, RecursionField, Schema } from "@formily/react";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import { SchemaComponentContext } from "./context";
 import { useUpdate } from "ahooks";
 import { SchemaComponentOptions } from "./SchemaComponentOptions";

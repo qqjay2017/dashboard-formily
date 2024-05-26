@@ -1,7 +1,7 @@
 
 
 
-import { PropsWithChildren, memo, useMemo, useState } from 'react'
+import { PropsWithChildren, memo, useContext, useMemo, useState } from 'react'
 
 import { useBreakpoints } from './hooks';
 
@@ -35,8 +35,9 @@ export interface DashboardRootRendererProviderProps extends PropsWithChildren {
 export const DashboardRoot = memo(({ children, ...props }: DashboardRootRendererProviderProps) => {
     const { breakpoints = defaultBreakpoints, designWidth = 1920,
         designHeight = 1080, cols = 12, rows = 12, rowheight = 80,
-        themeProvider = '', designable: defaultDesignable, distributed,
+        themeProvider = '', distributed,
     } = props;
+    const { designable: defaultDesignable, ...restCtx } = useContext(DashboardComponentContext)
     const [designable, setDesignable] = useState(defaultDesignable || false)
     const [handleIds, setHandleIds] = useState<string[]>([])
     const refresh = useUpdate()
@@ -87,8 +88,10 @@ export const DashboardRoot = memo(({ children, ...props }: DashboardRootRenderer
 
         }}>
             <DashboardComponentContext.Provider value={{
+                ...restCtx,
                 refresh,
-                designable, setDesignable,
+                designable,
+                setDesignable,
                 distributed,
                 handleIds,
                 setHandleIds
