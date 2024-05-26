@@ -1,4 +1,4 @@
-import { PropsWithChildren, useMemo, useRef } from "react"
+import { PropsWithChildren, useMemo } from "react"
 import { BlockItemError } from "./common/BlockItemError"
 import { PositionDecoratorOptions, SchemaToolbarProps } from "./types"
 import { useDashboardComponent, useDashboardRoot } from "./hooks"
@@ -8,6 +8,7 @@ import { Rnd } from "react-rnd";
 import { useField, useFieldSchema } from "@formily/react"
 import { DragHandler } from "./common/DragHandler"
 import { createStyles } from '../core'
+import { useDesignable } from "../schema-component"
 
 const resizeHandleStyles1: React.CSSProperties = {
     height: '7px',
@@ -43,7 +44,7 @@ const useRndStyle = createStyles(({ css, }, { toolbarActive }: { toolbarActive?:
 })
 // TODO 编辑++
 export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecoratorOptions>) => {
-
+    const { dn } = useDesignable()
     const { children, x = 0, y = 0, w = 0, h = 0, zIndex = 2, style, padding = 12, className, ...otherProps } = props
     const { colWidth, rowHeight } = useDashboardRoot()
 
@@ -102,13 +103,19 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
 
     const enableResizing = resizable && toolbarActive
     return <Rnd
-        onMouseDown={() => {
+        onMouseDown={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            if (toolbarActive) {
+                return false
+            }
+
             setHandleIds && setHandleIds((oldIds) => {
+                console.log(oldIds, eid)
                 if (oldIds.includes(eid)) {
-                    return []
-                } else {
-                    return [eid]
+                    return oldIds
                 }
+                return [eid]
             })
         }}
         dragHandleClassName={dragHandleClassName}
@@ -148,15 +155,15 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
 
 
         onDragStop={(_, { x, y }) => {
-            console.log(x)
-            // dn.shallowMerge({
-            //     "x-uid": "aabbcc",
-            //     "x-decorator-props": {
-            //         ...dn.model.decoratorProps,
-            //         x: sizeFormat(x / colWidth),
-            //         y: sizeFormat((y) / rowHeight)
-            //     }
-            // })
+
+            dn.shallowMerge({
+                "x-uid": "aabbcc",
+                "x-decorator-props": {
+                    ...dn.model.decoratorProps,
+                    x: sizeFormat(x / colWidth),
+                    y: sizeFormat((y) / rowHeight)
+                }
+            })
 
 
         }}
@@ -166,18 +173,18 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
 
             const isLeft = _d === 'left'
             const isTop = _d === 'top'
-            // const offsetX = dn.model.decoratorProps.w - newW;
-            // const offsetY = dn.model.decoratorProps.h - newH;
-            // dn.shallowMerge({
-            //     "x-uid": "aabbcc",
-            //     "x-decorator-props": {
-            //         ...dn.model.decoratorProps,
-            //         w: newW,
-            //         h: newH,
-            //         x: isLeft ? dn.model.decoratorProps.x + offsetX : dn.model.decoratorProps.x,
-            //         y: isTop ? dn.model.decoratorProps.y + offsetY : dn.model.decoratorProps.y,
-            //     }
-            // })
+            const offsetX = dn.model.decoratorProps.w - newW;
+            const offsetY = dn.model.decoratorProps.h - newH;
+            dn.shallowMerge({
+                "x-uid": "aabbcc",
+                "x-decorator-props": {
+                    ...dn.model.decoratorProps,
+                    w: newW,
+                    h: newH,
+                    x: isLeft ? dn.model.decoratorProps.x + offsetX : dn.model.decoratorProps.x,
+                    y: isTop ? dn.model.decoratorProps.y + offsetY : dn.model.decoratorProps.y,
+                }
+            })
         }}
     >
         {dragElement}

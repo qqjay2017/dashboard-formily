@@ -9,6 +9,8 @@ export const Hello = (props: PropsWithChildren) => {
     }}>
         <div style={{
             height: 40
+        }} onClick={e => {
+            console.log("hello")
         }}>Hello, world!</div>
 
         <div style={{
