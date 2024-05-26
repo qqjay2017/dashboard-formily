@@ -111,7 +111,7 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
             }
 
             setHandleIds && setHandleIds((oldIds) => {
-                console.log(oldIds, eid)
+
                 if (oldIds.includes(eid)) {
                     return oldIds
                 }
