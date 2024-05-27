@@ -9,6 +9,7 @@ import { useBreakpoints } from './hooks';
 import { DashboardComponentContext, DashboardRootContext } from './context';
 import { defaultBreakpoints, sizeFormat } from './utils';
 import { useUpdate } from 'ahooks';
+import { useFieldSchema } from '@formily/react';
 
 
 export interface DashboardRootRendererProviderProps extends PropsWithChildren {
@@ -39,7 +40,8 @@ export const DashboardRoot = memo(({ children, ...props }: DashboardRootRenderer
     } = props;
     const { designable: defaultDesignable, ...restCtx } = useContext(DashboardComponentContext)
     const [designable, setDesignable] = useState(defaultDesignable || false)
-    const [handleIds, setHandleIds] = useState<string[]>([])
+    const [handleIds, setHandleIds] = useState<string[]>([]);
+    const rootFieldSchema = useFieldSchema()
     const refresh = useUpdate()
 
 
@@ -73,7 +75,7 @@ export const DashboardRoot = memo(({ children, ...props }: DashboardRootRenderer
 
 
 
-
+    console.log(rootFieldSchema, 'rootFieldSchema')
 
     return (
         <DashboardRootContext.Provider value={{
@@ -85,6 +87,7 @@ export const DashboardRoot = memo(({ children, ...props }: DashboardRootRenderer
             designHeight,
             themeProvider,
             scale,
+            rootFieldSchema
 
         }}>
             <DashboardComponentContext.Provider value={{

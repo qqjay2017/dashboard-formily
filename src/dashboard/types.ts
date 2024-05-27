@@ -1,3 +1,4 @@
+import { Schema } from "@formily/react";
 import { PropsWithChildren } from "react";
 
 
@@ -16,6 +17,7 @@ export interface DashboardRootRendererContextValue {
     designHeight: number,
     themeProvider: string;
     scale: number;
+    rootFieldSchema: Schema
 }
 
 

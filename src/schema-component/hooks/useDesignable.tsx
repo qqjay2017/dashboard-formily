@@ -1,7 +1,7 @@
 
 
 import { GeneralField, Query } from '@formily/core';
-import { ISchema, Schema, SchemaOptionsContext, useField, useFieldSchema } from '@formily/react';
+import { ISchema, Schema, SchemaOptionsContext, useField, useFieldSchema, useForm } from '@formily/react';
 import { uid } from '@formily/shared';
 import { message } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
@@ -16,6 +16,7 @@ import { SchemaComponentContext } from '../context';
 // @ts-ignore
 import clientPkg from '../../../package.json';
 import { DashboardComponentContext } from '../../dashboard/context';
+import { useDashboardRoot } from '../../dashboard';
 
 interface CreateDesignableProps {
   current: Schema;
@@ -120,7 +121,14 @@ export class Designable {
   }
 
   loadAPIClientEvents() {
+    this.on('patch', async ({ schema }) => {
 
+      this.refresh()
+    });
+    this.on('batchPatch', async ({ schemas }) => {
+      this.refresh();
+
+    });
   }
 
   prepareProperty(schema: ISchema) {
@@ -275,7 +283,7 @@ export class Designable {
 
 
   remove(schema?: Schema, options: RemoveOptions = {}) {
-    const { breakRemoveOn, removeParentsIfNoChildren } = options;
+
     const s = schema || this.current;
 
     return this.emit('remove', {});
@@ -313,11 +321,22 @@ export function useFindComponent() {
   return find;
 }
 
-// TODO
+
+/**
+ * 用法:
+ *  const { patch } = useDesignable()
+ * patch({
+ * 
+ * })
+ * @returns 
+ */
 export function useDesignable() {
+
+
   const { designable, setDesignable, refresh } = useContext(DashboardComponentContext);
   const schemaOptions = useContext(SchemaOptionsContext);
   const components = useMemo(() => schemaOptions?.components || {}, [schemaOptions]);
+
   const DesignableBar = useMemo(
     () => () => {
       return <></>;
@@ -327,11 +346,13 @@ export function useDesignable() {
   const field = useField();
   const fieldSchema = useFieldSchema();
 
+
   const dn = useMemo(() => {
     return createDesignable({ refresh, current: fieldSchema, model: field, appVersion: clientPkg.version });
   }, [refresh, fieldSchema, field]);
 
   useEffect(() => {
+    // TODO 将数据同步到后端
     dn.loadAPIClientEvents();
   }, [dn]);
 
@@ -354,19 +375,15 @@ export function useDesignable() {
       [get],
     ),
     on: dn.on.bind(dn),
-    // TODO
-    /**
-     *  patch({
-          'x-component-props': {
-            required: v,
-          },
-        });
-     */
+    // 修改当前组件的字段属性----核心函数
     patch: useCallback(
       (key: ISchema | string, value?: any) => {
+
         const update = (obj: any) => {
           Object.keys(obj).forEach((k) => {
+
             const val = obj[k];
+            // TODO 更多key
             if (k === 'title') {
               field.title = val;
               fieldSchema['title'] = val;
@@ -403,7 +420,7 @@ export function useDesignable() {
           return update(obj);
         }
         update(key);
-        refresh();
+        // refresh();
       },
       [dn],
     ),

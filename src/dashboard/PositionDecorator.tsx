@@ -9,6 +9,7 @@ import { useField, useFieldSchema } from "@formily/react"
 import { DragHandler } from "./common/DragHandler"
 import { createStyles } from '../core'
 import { useDesignable } from "../schema-component"
+import { cn } from "../utils"
 
 const resizeHandleStyles1: React.CSSProperties = {
     height: '7px',
@@ -44,8 +45,8 @@ const useRndStyle = createStyles(({ css, }, { toolbarActive }: { toolbarActive?:
 })
 // TODO 编辑++
 export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecoratorOptions>) => {
-    const { dn } = useDesignable()
-    const { children, x = 0, y = 0, w = 0, h = 0, zIndex = 2, style, padding = 12, className, ...otherProps } = props
+    const { patch } = useDesignable()
+    const { children, x = 0, y = 0, w = 0, h = 0, zIndex = 2, style, padding = 12, className } = props
     const { colWidth, rowHeight } = useDashboardRoot()
 
     const { setHandleIds, handleIds } = useDashboardComponent()
@@ -121,7 +122,7 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
         dragHandleClassName={dragHandleClassName}
 
         bounds="parent"
-        className={rndStyle.styles}
+        className={cn(rndStyle.styles, className)}
         position={{
             x: sizeFormat(x * colWidth),
             y: sizeFormat(y * rowHeight),
@@ -152,14 +153,12 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
             left: { ...resizeHandleStyles2, transform: 'translate( 1px , -50% )', cursor: 'w-resize' },
 
         }}
-
-
         onDragStop={(_, { x, y }) => {
-
-            dn.shallowMerge({
+            patch({
                 "x-uid": "aabbcc",
                 "x-decorator-props": {
-                    ...dn.model.decoratorProps,
+                    w,
+                    h,
                     x: sizeFormat(x / colWidth),
                     y: sizeFormat((y) / rowHeight)
                 }
@@ -173,16 +172,15 @@ export const PositionDecoratorHandle = (props: PropsWithChildren<PositionDecorat
 
             const isLeft = _d === 'left'
             const isTop = _d === 'top'
-            const offsetX = dn.model.decoratorProps.w - newW;
-            const offsetY = dn.model.decoratorProps.h - newH;
-            dn.shallowMerge({
+            const offsetX = w - newW;
+            const offsetY = h - newH;
+            patch({
                 "x-uid": "aabbcc",
                 "x-decorator-props": {
-                    ...dn.model.decoratorProps,
                     w: newW,
                     h: newH,
-                    x: isLeft ? dn.model.decoratorProps.x + offsetX : dn.model.decoratorProps.x,
-                    y: isTop ? dn.model.decoratorProps.y + offsetY : dn.model.decoratorProps.y,
+                    x: isLeft ? x + offsetX : x,
+                    y: isTop ? y + offsetY : y,
                 }
             })
         }}
