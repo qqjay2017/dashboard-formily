@@ -238,7 +238,7 @@ export const PositionDecoratorOnlyDisplay = (props: PropsWithChildren<PositionDe
 }
 
 
-export const PositionDecorator = (props: PropsWithChildren<PositionDecoratorOptions>) => {
+export function PositionDecorator(props: PropsWithChildren<PositionDecoratorOptions>) {
     const field = useField()
     const fieldSchema = useFieldSchema()
     const { designable, } = useDashboardComponent();

@@ -12,13 +12,13 @@ interface AppMainProviderProps extends PropsWithChildren {
 export const AppMainProvider = ({ children }: AppMainProviderProps) => {
     return (
         <GlobalThemeProvider>
-            <CSSVariableProvider>
-                <ConfigProvider
-                    locale={zhCN}
-                >
-                    {children}
-                </ConfigProvider>
-            </CSSVariableProvider>
+
+            <ConfigProvider
+                locale={zhCN}
+            >
+                {children}
+            </ConfigProvider>
+
         </GlobalThemeProvider>
     )
 }

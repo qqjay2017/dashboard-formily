@@ -1,14 +1,14 @@
+
 import { AppMainProvider } from "../app-main/AppMainProvider"
+import { baseDashboardRootSchema } from "../dashboard"
 import { Hello } from "../dashboard/common/Hello"
-import { SchemaComponent, SchemaComponentProvider, dashboardComponentMap } from "../schema-component"
+
+import { SchemaComponent, SchemaComponentProvider, baseClassicFrameSchema, dashboardComponentMap } from "../schema-component"
 
 
 
 const schema = {
-    name: 'root',
-    type: 'void',
-    'x-component': 'DashboardRoot',
-
+    ...baseDashboardRootSchema,
     'x-component-props': {
         cols: 12,
         rows: 12,
@@ -21,90 +21,81 @@ const schema = {
             tablet: 500,
             mobile: 0,
         },
-        themeProvider: 'jfLightTheme'
+        themeProvider: 'jfLightTheme',
 
     },
     properties: {
         a1: {
-            'x-uid': 'a1a1id',
-            _isJSONSchemaObject: true,
-            type: 'void',
-            'x-component': 'Hello',
-            "x-settings": "settings:block",
-            'x-decorator': 'PositionDecorator',
+            ...baseClassicFrameSchema,
+
             'x-decorator-props': {
                 w: 3,
-                h: 4,
-                x: 2,
-                y: 4
+                h: 1.75,
+                x: 0,
+                y: 0
             },
             properties: {
-                b1: {
-                    'x-uid': 'b1a1id',
+                a11: {
+                    "x-settings": "settings:block",
+                    'x-decorator': 'PositionDecorator',
                     _isJSONSchemaObject: true,
                     type: 'void',
                     'x-component': 'Hello',
-                    "x-settings": "settings:block",
-                    'x-decorator': 'PositionDecorator',
                     'x-decorator-props': {
                         w: 1,
                         h: 1,
                         x: 0,
                         y: 0
                     },
-                },
+                }
             }
         },
         a2: {
-            'x-uid': 'a2a2d',
-            _isJSONSchemaObject: true,
-
-            type: 'void',
-            'x-component': 'Hello',
-            "x-settings": "settings:block",
-            'x-decorator': 'PositionDecorator',
+            ...baseClassicFrameSchema,
+            "x-component-props": {
+                title: "今日现场",
+                extra: "Button",
+                extraProps: {
+                    type: 'primary'
+                }
+            },
             'x-decorator-props': {
                 w: 3,
-                h: 3,
-                x: 6,
-                y: 8
-            }
-
-        },
-        a3: {
-            'x-uid': 'a3a3d',
-            _isJSONSchemaObject: true,
-            type: 'void',
-            'x-component': 'Hello',
-            "x-settings": "settings:block",
-            'x-decorator': 'PositionDecorator',
-            'x-decorator-props': {
-                w: 2,
-                h: 2,
-                x: 4,
-                y: 3
+                h: 4.6,
+                x: 0,
+                y: 1.6
             },
             properties: {
-                c1: {
-                    'x-uid': 'ccc1a1id',
+                a21: {
+                    "x-settings": "settings:block",
+                    'x-decorator': 'PositionDecorator',
                     _isJSONSchemaObject: true,
                     type: 'void',
                     'x-component': 'Hello',
-                    "x-settings": "settings:block",
-                    'x-decorator': 'PositionDecorator',
                     'x-decorator-props': {
                         w: 1,
                         h: 1,
                         x: 0,
                         y: 0
                     },
-                },
+                }
             }
+        },
+        a3: {
+            ...baseClassicFrameSchema,
+            'x-decorator-props': {
+                w: 3,
+                h: 5.9,
+                x: 0,
+                y: 6.1
+            },
 
-        }
+        },
+
+
     },
 }
-
+console.log(dashboardComponentMap)
 export const DashbaordSchemaEdit = () => {
     return (<AppMainProvider>
         <SchemaComponentProvider designable={true}>
@@ -112,6 +103,7 @@ export const DashbaordSchemaEdit = () => {
                 components={{
                     ...dashboardComponentMap,
                     Hello
+
                 }}
                 schema={schema}
 

@@ -18,6 +18,7 @@ export interface DashboardRootRendererContextValue {
     themeProvider: string;
     scale: number;
     rootFieldSchema: Schema
+    mobileRowHeight: number
 }
 
 

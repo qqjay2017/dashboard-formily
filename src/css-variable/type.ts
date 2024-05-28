@@ -43,13 +43,28 @@ export interface CustomToken extends AliasToken {
   marginBlock: number;
   /** 区块的圆角 */
   borderRadiusBlock: number;
+
+  /**
+   * 大屏主题相关
+   */
+  nodeContentBgColor: string;
+  textWhite: string;
+  textCommon: string;
+  textLight: string;
+  textPrimary: string;
+  textNoselect: string;
+  textSelect: string;
+  textTag: string;
+  textNum: string;
+  textNumLight: string;
+  thumbColor: string;
 }
 
 export interface ThemeConfig extends _ThemeConfig {
   name?: string;
   token?: Partial<CustomToken>;
 
-  algorithm: any;
+  algorithm?: any;
 }
 
 
