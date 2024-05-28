@@ -7,6 +7,11 @@ import { SchemaSettingsDropdown } from "../../../schema-settings";
 import React from "react";
 import { SchemaSettingsChildren } from "./SchemaSettingsChildren";
 
+/**
+ * 下拉框的最终渲染
+ * @param props 
+ * @returns 
+ */
 
 export const SchemaSettingsWrapper: FC<SchemaSettingOptions<any>> = (props) => {
     const { items, Component = SchemaSettingsIcon, name, componentProps, style, ...others } = props;
@@ -21,6 +26,10 @@ export const SchemaSettingsWrapper: FC<SchemaSettingOptions<any>> = (props) => {
         }),
         [componentProps, props, style],
     );
+
+    console.log(items, 'items')
+
+
     return (
         <SchemaSettingsDropdown
             title={React.createElement(Component, cProps)}

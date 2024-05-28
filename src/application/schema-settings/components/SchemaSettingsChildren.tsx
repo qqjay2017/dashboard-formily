@@ -7,13 +7,14 @@ import { useFindComponent } from '../../../schema-component';
 
 import { SchemaSettingsItemType } from '../types';
 import { SchemaSettingItemContext } from '../context/SchemaSettingItemContext';
+import { SchemaSettingsItem } from '../../../schema-settings';
 
 export interface SchemaSettingsChildrenProps {
   children: SchemaSettingsItemType[];
 }
 
 const typeComponentMap = {
-
+  item: SchemaSettingsItem,
 };
 
 export const SchemaSettingsChildren: FC<SchemaSettingsChildrenProps> = (props) => {
@@ -30,6 +31,7 @@ export const SchemaSettingsChildren: FC<SchemaSettingsChildrenProps> = (props) =
 
   // if (!visible && !firstVisible.current) return null;
   const fieldComponentName = "AA1"
+  console.log(children, 'children')
   if (!children || children.length === 0) return null;
   return (
     <>
@@ -40,7 +42,7 @@ export const SchemaSettingsChildren: FC<SchemaSettingsChildrenProps> = (props) =
           // 此时如果使用 item.name 作为 key，会导致 React 认为其前后是同一个组件；因为 SchemaSettingsChild 的某些 hooks 是通过 props 传入的，
           // 两次渲染之间 props 可能发生变化，就可能报 hooks 调用顺序的错误。所以这里使用 fieldComponentName 和 item.name 拼成
           // 一个不会重复的 key，保证每次渲染都是新的组件。
-          const key = `${fieldComponentName ? fieldComponentName + '-' : ''}${item.name}`;
+          const key = `${item.name}${item.key}`;
           return <SchemaSettingsChild key={key} {...item} />;
         })}
     </>
@@ -73,6 +75,7 @@ export const SchemaSettingsChild: FC<SchemaSettingsItemType> = memo((props) => {
     return !Component && type && typeComponentMap[type] ? typeComponentMap[type] : Component;
   }, [type, Component]);
 
+
   if (!visibleResult) return null;
   if (!type && !Component) return null;
 
@@ -87,6 +90,7 @@ export const SchemaSettingsChild: FC<SchemaSettingsItemType> = memo((props) => {
   return (
     <SchemaSettingItemContext.Provider value={props}>
       <C {...componentProps} {...useComponentPropsRes}>
+        {/* 递归渲染子级 */}
         {Array.isArray(componentChildren) && componentChildren.length > 0 && (
           <SchemaSettingsChildren>{componentChildren}</SchemaSettingsChildren>
         )}

@@ -28,6 +28,7 @@ export function useSchemaSettingsRender<T = {}>(
         () => (typeof name === 'object') ? name : schemaSettingsManager[name],
         [name],
     );
+
     if (!name || !schemaSetting) {
         console.error(`[大屏低代码]: SchemaSettings "${name}" not found`);
         return {
