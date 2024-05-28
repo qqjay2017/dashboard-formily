@@ -1,5 +1,6 @@
 import { Schema } from "@formily/react";
 import { PropsWithChildren } from "react";
+import { SchemaSettings } from "../application";
 
 
 
@@ -54,6 +55,7 @@ export interface SchemaToolbarProps extends PropsWithChildren {
     resizable?: boolean;
     // initializer?: string | SchemaInitializer<any> | false;
     // settings?: string | SchemaSettings<any> | false;
+    settings?: boolean | string | SchemaSettings
     /**
      * @default true
      */

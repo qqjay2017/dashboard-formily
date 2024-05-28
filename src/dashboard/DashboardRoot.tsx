@@ -16,9 +16,11 @@ import { useFieldSchema } from "@formily/react";
 import { createStyles } from "antd-style";
 import { rs } from "../utils/resolveStatic";
 import { cn } from "../utils";
-import { allThemeNameMap } from "../dashboard-themes";
+import { allThemeNameMap, allThemes } from "../dashboard-themes";
 import { ConfigProvider } from "antd";
 import { CSSVariableProvider } from "../css-variable";
+import { useDesignable } from "../schema-component";
+import { useDashboardRootDesigner } from "./hooks/useDashboardRootDesigner";
 
 export interface DashboardRootRendererProviderProps extends PropsWithChildren, HTMLAttributes<any> {
     cols?: number;
@@ -113,8 +115,9 @@ export function DashboardRoot({
     }, [designWidth, designHeight, width, height]);
 
     const rootStyle = useDashboardRootStyle();
-    const themeToken = allThemeNameMap[themeProvider]?.token || {}
-
+    const themeToken = allThemeNameMap[themeProvider]?.token || {};
+    // const { patch } = useDesignable()
+    const DashboardRootDesigner = useDashboardRootDesigner()
     return (
         <ConfigProvider theme={{
             token: themeToken
@@ -156,6 +159,7 @@ export function DashboardRoot({
                                 ...style,
                             }}
                         >
+                            <DashboardRootDesigner />
                             {children}
                         </div>
                     </DashboardComponentContext.Provider>
