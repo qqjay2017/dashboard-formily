@@ -1,6 +1,6 @@
 
 
-import { jfDarkThemeToken } from '../dashboard-themes';
+import { technologyBlueToken } from '../dashboard-themes';
 import { ThemeConfig } from './type';
 
 const defaultTheme: ThemeConfig = {
@@ -26,7 +26,7 @@ const defaultTheme: ThemeConfig = {
     motion: true,
 
     // 大屏相关
-    ...jfDarkThemeToken
+    ...technologyBlueToken
   },
 };
 

@@ -1,6 +1,6 @@
 
 
-export const jfDarkThemeToken = {
+export const technologyBlueToken = {
     nodeContentBgColor: 'rgba(0, 26, 58, 0.8)',
     textWhite: "#fff",
     textCommon: "#c3d4e5",

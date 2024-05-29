@@ -8,16 +8,17 @@ export const StyleSettingModal = () => {
 
     return (
         <SchemaSettingsModalItem
+
             title={'主题风格设置'}
             schema={
                 {
                     type: 'object',
-                    title: 'Edit block title',
+                    title: '主题风格设置',
                     properties: {
-                        title: {
-                            title: 'Block title',
+                        colorType: {
+                            title: '主题颜色',
                             type: 'string',
-                            default: dn.getSchemaAttribute('x-decorator-props.title'),
+                            default: dn.getSchemaAttribute('x-compoennts-props.colorType'),
                             'x-decorator': 'FormItem',
                             'x-component': 'Input',
                             'x-compile-omitted': ['default'],
@@ -25,10 +26,11 @@ export const StyleSettingModal = () => {
                     },
                 } as ISchema
             }
-            onSubmit={({ title }) => {
+            onSubmit={({ colorType }) => {
+                console.log(colorType, 'colorType')
                 dn.deepMerge({
-                    'x-decorator-props': {
-                        title,
+                    'x-compoennts-props': {
+                        colorType,
                     },
                 });
             }}
