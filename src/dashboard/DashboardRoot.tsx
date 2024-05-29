@@ -1,7 +1,7 @@
 import React, {
     HTMLAttributes,
     PropsWithChildren,
-    memo,
+
     useContext,
     useMemo,
     useState,
@@ -16,10 +16,10 @@ import { useFieldSchema } from "@formily/react";
 import { createStyles } from "antd-style";
 import { rs } from "../utils/resolveStatic";
 import { cn } from "../utils";
-import { allThemeNameMap, allThemes } from "../dashboard-themes";
+import { allThemeNameMap } from "../dashboard-themes";
 import { ConfigProvider } from "antd";
 import { CSSVariableProvider } from "../css-variable";
-import { useDesignable } from "../schema-component";
+
 import { useDashboardRootDesigner } from "./hooks/useDashboardRootDesigner";
 
 export interface DashboardRootRendererProviderProps extends PropsWithChildren, HTMLAttributes<any> {
@@ -39,7 +39,7 @@ export interface DashboardRootRendererProviderProps extends PropsWithChildren, H
     rowheight?: 80;
     dndContext?: any;
     className?: string;
-    style: React.CSSProperties;
+    style?: React.CSSProperties;
 }
 
 const useDashboardRootStyle = createStyles(({ css }) => {
@@ -167,4 +167,14 @@ export function DashboardRoot({
             </CSSVariableProvider>
         </ConfigProvider>
     );
+}
+
+DashboardRoot.schema = {
+    name: 'root',
+    type: 'void',
+    'x-component': 'DashboardRoot',
+    "x-settings": "settings:root",
+    "x-settings-props": {
+
+    }
 }

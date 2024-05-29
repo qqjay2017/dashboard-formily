@@ -7,7 +7,7 @@ import { useFindComponent } from '../../../schema-component';
 
 import { SchemaSettingsItemType } from '../types';
 import { SchemaSettingItemContext } from '../context/SchemaSettingItemContext';
-import { SchemaSettingsItem } from '../../../schema-settings';
+import { SchemaSettingsItem, SchemaSettingsModalItem } from '../../../schema-settings';
 
 export interface SchemaSettingsChildrenProps {
   children: SchemaSettingsItemType[];
@@ -15,6 +15,7 @@ export interface SchemaSettingsChildrenProps {
 
 const typeComponentMap = {
   item: SchemaSettingsItem,
+  modal: SchemaSettingsModalItem,
 };
 
 export const SchemaSettingsChildren: FC<SchemaSettingsChildrenProps> = (props) => {
@@ -31,19 +32,20 @@ export const SchemaSettingsChildren: FC<SchemaSettingsChildrenProps> = (props) =
 
   // if (!visible && !firstVisible.current) return null;
   const fieldComponentName = "AA1"
-  console.log(children, 'children')
+
   if (!children || children.length === 0) return null;
   return (
     <>
       {children
         .sort((a, b) => (a.sort || 0) - (b.sort || 0))
-        .map((item) => {
+        .map((_item) => {
+          const { key, ...item } = _item
           // 当动态切换 SchemaSettings 列表时（比如切换 field component 时，列表会动态变化），切换前和切换后的 item.name 可能相同，
           // 此时如果使用 item.name 作为 key，会导致 React 认为其前后是同一个组件；因为 SchemaSettingsChild 的某些 hooks 是通过 props 传入的，
           // 两次渲染之间 props 可能发生变化，就可能报 hooks 调用顺序的错误。所以这里使用 fieldComponentName 和 item.name 拼成
           // 一个不会重复的 key，保证每次渲染都是新的组件。
-          const key = `${item.name}${item.key}`;
-          return <SchemaSettingsChild key={key} {...item} />;
+          const _key = `${item.name}${key}`;
+          return <SchemaSettingsChild key={_key} {...item} />;
         })}
     </>
   );

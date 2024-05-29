@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@emotion/css": "^11.11.2",
+    "@formily/antd-v5": "^1.2.0",
     "@formily/core": "^2.3.1",
     "@formily/react": "^2.3.1",
     "ahooks": "^3.8.0",
@@ -23,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.13",
     "react-rnd": "^10.4.11",
+    "react-router-dom": "^6.23.1",
     "use-resize-observer": "^9.1.0"
   },
   "devDependencies": {

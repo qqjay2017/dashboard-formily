@@ -1,14 +1,14 @@
 
 import { AppMainProvider } from "../app-main/AppMainProvider"
-import { baseDashboardRootSchema } from "../dashboard"
+import { DashboardRoot } from "../dashboard"
 import { Hello } from "../dashboard/common/Hello"
 
-import { SchemaComponent, SchemaComponentProvider, baseClassicFrameSchema, dashboardComponentMap } from "../schema-component"
+import { ClassicFrame, SchemaComponent, SchemaComponentProvider, dashboardComponentMap } from "../schema-component"
 
 
 
 const schema = {
-    ...baseDashboardRootSchema,
+    ...DashboardRoot.schema,
     'x-component-props': {
         cols: 12,
         rows: 12,
@@ -26,7 +26,7 @@ const schema = {
     },
     properties: {
         a1: {
-            ...baseClassicFrameSchema,
+            ...ClassicFrame.schema,
 
             'x-decorator-props': {
                 w: 3,
@@ -51,7 +51,7 @@ const schema = {
             }
         },
         a2: {
-            ...baseClassicFrameSchema,
+            ...ClassicFrame.schema,
             "x-component-props": {
                 title: "今日现场",
                 extra: "Button",
@@ -82,7 +82,7 @@ const schema = {
             }
         },
         a3: {
-            ...baseClassicFrameSchema,
+            ...ClassicFrame.schema,
             'x-decorator-props': {
                 w: 3,
                 h: 5.9,
@@ -95,7 +95,7 @@ const schema = {
 
     },
 }
-console.log(dashboardComponentMap)
+
 export const DashbaordSchemaEdit = () => {
     return (<AppMainProvider>
         <SchemaComponentProvider designable={true}>

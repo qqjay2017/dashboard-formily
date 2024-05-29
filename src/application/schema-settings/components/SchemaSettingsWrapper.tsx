@@ -27,7 +27,7 @@ export const SchemaSettingsWrapper: FC<SchemaSettingOptions<any>> = (props) => {
         [componentProps, props, style],
     );
 
-    console.log(items, 'items')
+
 
 
     return (

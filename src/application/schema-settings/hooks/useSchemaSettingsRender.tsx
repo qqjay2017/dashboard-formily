@@ -23,7 +23,7 @@ export function useSchemaSettingsRender<T = {}>(
 ) {
     // name   根据name匹配对应的下拉配置
     //最外层的配置 settings:root
-    console.log(name, 'name')
+
     const schemaSetting: SchemaSettings = useMemo(
         () => (typeof name === 'object') ? name : schemaSettingsManager[name],
         [name],

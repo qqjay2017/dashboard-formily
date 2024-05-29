@@ -1,5 +1,6 @@
 import { MenuItemProps } from "antd";
 import { ComponentType } from "react";
+import { SchemaSettingsModalItemProps } from "../../schema-settings";
 
 export interface SchemaSettingOptions<T = {}> {
     name: string;
@@ -37,10 +38,14 @@ export interface SchemaSettingsItemProps extends Omit<MenuItemProps, 'title'> {
 export interface SchemaSettingItemItemType extends SchemaSettingsItemCommon<SchemaSettingsItemProps> {
     type: 'item';
 }
+export type SchemaSettingItemModalType = SchemaSettingsItemCommon<SchemaSettingsModalItemProps> & {
+    type: 'modal';
+};
 
 export type SchemaSettingItemAllBuiltType =
 
     | SchemaSettingItemItemType
+    | SchemaSettingItemModalType
     ;
 
 export type SchemaSettingsItemType = SchemaSettingItemComponentType | SchemaSettingItemAllBuiltType;

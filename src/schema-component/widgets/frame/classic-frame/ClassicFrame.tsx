@@ -24,7 +24,7 @@ export function ClassicFrame({ children,
     titleClassName,
     contentClassName
 }: ClassicFramePropw) {
-    console.log(title, extra, extraProps)
+
     const hasTitle = title || extra;
     const classicFrameStyle = useClassicFrameStyle({ hasTitle: !!hasTitle })
 
@@ -63,3 +63,11 @@ export function ClassicFrame({ children,
     )
 }
 
+
+ClassicFrame.schema = {
+    _isJSONSchemaObject: true,
+    type: 'void',
+    'x-component': 'ClassicFrame',
+    "x-settings": "settings:block",
+    'x-decorator': 'PositionDecorator',
+}
