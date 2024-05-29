@@ -23,12 +23,12 @@ import { romanRedToken } from './RomanRed'
 
 export const allThemes = [
     {
-        name: "TechnologyBlue",
+        name: "technologyBlue",
         zhName: "科技蓝",
         token: technologyBlueToken
     },
     {
-        name: "RomanRed",
+        name: "romanRed",
         zhName: "罗马红",
         token: romanRedToken
     },

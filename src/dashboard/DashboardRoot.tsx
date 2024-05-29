@@ -18,7 +18,7 @@ import { rs } from "../utils/resolveStatic";
 import { cn } from "../utils";
 import { allThemeNameMap } from "../dashboard-themes";
 import { ConfigProvider } from "antd";
-import { CSSVariableProvider } from "../css-variable";
+import { CSSVariableProvider, GlobalThemeProvider } from "../css-variable";
 
 import { useDashboardRootDesigner } from "./hooks/useDashboardRootDesigner";
 
@@ -40,6 +40,7 @@ export interface DashboardRootRendererProviderProps extends PropsWithChildren, H
     dndContext?: any;
     className?: string;
     style?: React.CSSProperties;
+    isDarkTheme?: boolean
 }
 
 const useDashboardRootStyle = createStyles(({ css }) => {
@@ -65,6 +66,7 @@ export function DashboardRoot({
     children,
     ...props
 }: DashboardRootRendererProviderProps) {
+    console.log(props, 'root props')
     const {
         breakpoints = defaultBreakpoints,
         designWidth = 1920,
@@ -76,8 +78,10 @@ export function DashboardRoot({
         distributed,
         className,
         style,
+        isDarkTheme,
         ...otherProps
     } = props;
+
     const { designable: defaultDesignable, ...restCtx } = useContext(
         DashboardComponentContext
     );
@@ -116,12 +120,11 @@ export function DashboardRoot({
 
     const rootStyle = useDashboardRootStyle();
     const themeToken = allThemeNameMap[themeProvider]?.token || {};
+
     // const { patch } = useDesignable()
     const DashboardRootDesigner = useDashboardRootDesigner()
     return (
-        <ConfigProvider theme={{
-            token: themeToken
-        }}>
+        <GlobalThemeProvider theme={themeToken} isDarkTheme={isDarkTheme}>
             <CSSVariableProvider>
                 <DashboardRootContext.Provider
                     value={{
@@ -165,7 +168,7 @@ export function DashboardRoot({
                     </DashboardComponentContext.Provider>
                 </DashboardRootContext.Provider>
             </CSSVariableProvider>
-        </ConfigProvider>
+        </GlobalThemeProvider>
     );
 }
 

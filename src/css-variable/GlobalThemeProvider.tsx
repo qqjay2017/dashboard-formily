@@ -8,18 +8,11 @@ import { cloneDeep } from "lodash-es";
 import { addCustomAlgorithmToTheme } from "./customAlgorithm";
 
 
-export const GlobalThemeProvider = ({ children, theme: themeFromProps }: PropsWithChildren<any>) => {
+export const GlobalThemeProvider = ({ children, theme: themeFromProps, isDarkTheme = false }: PropsWithChildren<any>) => {
     const [theme, setTheme] = useState<ThemeConfig>(themeFromProps || defaultTheme);
     const currentSettingThemeRef = useRef<ThemeConfig>(null!);
     const currentEditingThemeRef = useRef<ThemeItem>(null!);
 
-    const isDarkTheme = useMemo(() => {
-        const algorithm = theme?.algorithm;
-        if (Array.isArray(algorithm)) {
-            return algorithm.includes(antdTheme.darkAlgorithm);
-        }
-        return algorithm === antdTheme.darkAlgorithm;
-    }, [theme?.algorithm]);
 
     const setCurrentEditingTheme = useCallback((themeItem: ThemeItem) => {
         currentEditingThemeRef.current = themeItem ? cloneDeep(themeItem) : themeItem;

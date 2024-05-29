@@ -186,6 +186,7 @@ export class Designable {
   }
 
   deepMerge(schema: ISchema) {
+
     const replaceKeys = {
       title: 'title',
       description: 'description',
@@ -214,10 +215,12 @@ export class Designable {
     };
 
     Object.keys(schema).forEach((key) => {
+
       if (replaceKeys[key]) {
         this.current[key] = schema[key];
         this.updateModel(replaceKeys[key], schema[key]);
       } else if (mergeKeys[key]) {
+
         Object.keys(schema[key]).forEach((key2) => {
           set(this.current, [key, key2], schema[key][key2]);
           this.updateModel([mergeKeys[key], key2], schema[key][key2]);

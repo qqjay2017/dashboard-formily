@@ -21,7 +21,8 @@ const schema = {
             tablet: 500,
             mobile: 0,
         },
-        themeProvider: 'jfLightTheme',
+        themeProvider: 'technologyBlue',
+        isDarkTheme: true
 
     },
     properties: {
@@ -101,7 +102,7 @@ export const DashbaordSchemaEdit = () => {
         <SchemaComponentProvider designable={true}>
             <SchemaComponent
                 components={{
-                    ...dashboardComponentMap,
+                    ...(dashboardComponentMap as any),
                     Hello
 
                 }}

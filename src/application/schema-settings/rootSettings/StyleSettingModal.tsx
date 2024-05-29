@@ -1,10 +1,11 @@
 import React from 'react'
 import { SchemaSettingsModalItem, useSchemaSettings } from '../../../schema-settings';
 import { ISchema } from '@formily/react';
+import { ColorTypeSelect } from './ColorTypeSelect';
+import { IsDarkThemeSelect } from './IsDarkThemeSelect';
 
 export const StyleSettingModal = () => {
     const { dn } = useSchemaSettings();
-    console.log(dn, 'dn')
 
     return (
         <SchemaSettingsModalItem
@@ -15,22 +16,30 @@ export const StyleSettingModal = () => {
                     type: 'object',
                     title: '主题风格设置',
                     properties: {
-                        colorType: {
+                        themeProvider: {
                             title: '主题颜色',
                             type: 'string',
-                            default: dn.getSchemaAttribute('x-compoennts-props.colorType'),
+                            default: dn.getSchemaAttribute('x-component-props.themeProvider'),
                             'x-decorator': 'FormItem',
-                            'x-component': 'Input',
+                            'x-component': ColorTypeSelect,
+                            'x-compile-omitted': ['default'],
+                        },
+                        isDarkTheme: {
+                            title: '主题风格',
+                            type: 'boolearn',
+                            default: dn.getSchemaAttribute('x-component-props.isDarkTheme'),
+                            'x-decorator': 'FormItem',
+                            'x-component': IsDarkThemeSelect,
                             'x-compile-omitted': ['default'],
                         },
                     },
                 } as ISchema
             }
-            onSubmit={({ colorType }) => {
-                console.log(colorType, 'colorType')
+            onSubmit={(formValue) => {
+
                 dn.deepMerge({
-                    'x-compoennts-props': {
-                        colorType,
+                    'x-component-props': {
+                        ...formValue,
                     },
                 });
             }}

@@ -1,4 +1,6 @@
 import React from 'react'
+import { allThemes } from '../../../dashboard-themes';
+import { Radio } from 'antd';
 
 
 interface ColorTypeSelectProps {
@@ -9,9 +11,18 @@ export const ColorTypeSelect = ({
     value, onChange
 }: ColorTypeSelectProps) => {
     return (
-        <div>
-            <div>科技蓝</div>
-            <div>罗马红</div>
-        </div>
+
+        <Radio.Group
+            optionType="button"
+            buttonStyle="solid"
+            options={allThemes.map(theme => {
+                return {
+                    label: theme.zhName,
+                    value: theme.name
+                }
+            })}
+            onChange={onChange}
+            value={value} />
+
     )
 }
