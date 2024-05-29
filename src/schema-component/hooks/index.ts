@@ -1,2 +1,5 @@
 export * from './useSchemaOptionsContext'
 export * from './useDesignable'
+export * from './useCompile'
+export * from './useAttach'
+export * from './useComponent'

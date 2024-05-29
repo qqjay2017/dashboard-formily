@@ -8,7 +8,7 @@ export const StyleSettingModal = () => {
 
     return (
         <SchemaSettingsModalItem
-            title={'Edit block title'}
+            title={'主题风格设置'}
             schema={
                 {
                     type: 'object',
