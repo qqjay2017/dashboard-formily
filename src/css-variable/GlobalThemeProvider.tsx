@@ -1,57 +1,74 @@
 import { ConfigProvider, ThemeConfig, theme as antdTheme } from "antd";
 import { GlobalThemeContext } from "./GlobalThemeContext";
-import { PropsWithChildren, useCallback, useMemo, useRef, useState } from "react";
+import {
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ThemeItem } from "./type";
 import defaultTheme from "./defaultTheme";
 import compatOldTheme from "./compatOldTheme";
 import { cloneDeep } from "lodash-es";
 import { addCustomAlgorithmToTheme } from "./customAlgorithm";
 
+export const GlobalThemeProvider = ({
+  children,
+  theme: themeFromProps,
+  isDarkTheme = false,
+}: PropsWithChildren<any>) => {
+  const [theme, setTheme] = useState<ThemeConfig>(
+    themeFromProps || defaultTheme
+  );
+  const currentSettingThemeRef = useRef<ThemeConfig>(null!);
+  const currentEditingThemeRef = useRef<ThemeItem>(null!);
 
-export const GlobalThemeProvider = ({ children, theme: themeFromProps, isDarkTheme = false }: PropsWithChildren<any>) => {
-    const [theme, setTheme] = useState<ThemeConfig>(themeFromProps || defaultTheme);
-    const currentSettingThemeRef = useRef<ThemeConfig>(null!);
-    const currentEditingThemeRef = useRef<ThemeItem>(null!);
+  const setCurrentEditingTheme = useCallback((themeItem: ThemeItem) => {
+    currentEditingThemeRef.current = themeItem
+      ? cloneDeep(themeItem)
+      : themeItem;
+  }, []);
 
+  const getCurrentEditingTheme = useCallback(() => {
+    return currentEditingThemeRef.current;
+  }, []);
 
-    const setCurrentEditingTheme = useCallback((themeItem: ThemeItem) => {
-        currentEditingThemeRef.current = themeItem ? cloneDeep(themeItem) : themeItem;
-    }, []);
+  const setCurrentSettingTheme = useCallback((theme: ThemeConfig) => {
+    currentSettingThemeRef.current = theme ? cloneDeep(theme) : theme;
+  }, []);
 
-    const getCurrentEditingTheme = useCallback(() => {
-        return currentEditingThemeRef.current;
-    }, []);
+  const getCurrentSettingTheme = useCallback(() => {
+    return currentSettingThemeRef.current;
+  }, []);
+  console.log(
+    addCustomAlgorithmToTheme(theme as any),
+    "addCustomAlgorithmToTheme(theme as any)"
+  );
+  const value = useMemo(() => {
+    return {
+      theme: addCustomAlgorithmToTheme(theme as any),
+      setTheme,
+      setCurrentSettingTheme,
+      getCurrentSettingTheme,
+      setCurrentEditingTheme,
+      getCurrentEditingTheme,
+      isDarkTheme,
+    };
+  }, [
+    getCurrentEditingTheme,
+    getCurrentSettingTheme,
+    isDarkTheme,
+    setCurrentEditingTheme,
+    setCurrentSettingTheme,
+    theme,
+  ]);
 
-    const setCurrentSettingTheme = useCallback((theme: ThemeConfig) => {
-        currentSettingThemeRef.current = theme ? cloneDeep(theme) : theme;
-    }, []);
-
-    const getCurrentSettingTheme = useCallback(() => {
-        return currentSettingThemeRef.current;
-    }, []);
-
-    const value = useMemo(() => {
-        return {
-            theme: addCustomAlgorithmToTheme(theme as any),
-            setTheme,
-            setCurrentSettingTheme,
-            getCurrentSettingTheme,
-            setCurrentEditingTheme,
-            getCurrentEditingTheme,
-            isDarkTheme,
-        };
-    }, [
-        getCurrentEditingTheme,
-        getCurrentSettingTheme,
-        isDarkTheme,
-        setCurrentEditingTheme,
-        setCurrentSettingTheme,
-        theme,
-    ]);
-
-    return (
-        <GlobalThemeContext.Provider value={value as any}>
-            <ConfigProvider theme={compatOldTheme(value.theme)}>{children}</ConfigProvider>
-        </GlobalThemeContext.Provider>
-    );
+  return (
+    <GlobalThemeContext.Provider value={value as any}>
+      <ConfigProvider theme={compatOldTheme(value.theme)}>
+        {children}
+      </ConfigProvider>
+    </GlobalThemeContext.Provider>
+  );
 };

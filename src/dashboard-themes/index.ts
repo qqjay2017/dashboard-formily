@@ -16,7 +16,7 @@ import vintage from './themes/vintage.json'
 import walden from './themes/walden.json'
 import westeros from './themes/westeros.json'
 import wonderland from './themes/wonderland.json'
-import { technologyBlueToken } from './TechnologyBlue'
+import { technologyBlueDarkToken, technologyBlueLightToken, technologyBlueToken } from './TechnologyBlue'
 import { romanRedToken } from './RomanRed'
 
 
@@ -25,12 +25,16 @@ export const allThemes = [
     {
         name: "technologyBlue",
         zhName: "科技蓝",
-        token: technologyBlueToken
+        token: technologyBlueToken,
+        dark: technologyBlueDarkToken,
+        light: technologyBlueLightToken,
     },
     {
         name: "romanRed",
         zhName: "罗马红",
-        token: romanRedToken
+        token: romanRedToken,
+        dark: {},
+        light: {},
     },
 
 ]
