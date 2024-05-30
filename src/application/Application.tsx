@@ -19,6 +19,10 @@ import { AppSchemaComponentProvider } from "./AppSchemaComponentProvider";
 import AntdAppProvider from "../css-variable/AntdAppProvider";
 import { Link, NavLink, Navigate } from "react-router-dom";
 import { PluginManager, PluginType } from "./PluginManager";
+import { APIClientOptions } from "../sdk/APIClient";
+import { APIClient } from "../api-client/APIClient";
+import { APIClientProvider } from "../api-client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 export type ComponentAndProps<T = any> = [ComponentType, T];
 export interface ApplicationOptions {
   name?: string;
@@ -32,6 +36,7 @@ export interface ApplicationOptions {
   scopes?: Record<string, any>;
   router?: RouterOptions;
   designable?: boolean;
+  apiClient?: APIClientOptions | APIClient;
 }
 
 export class Application {
@@ -45,6 +50,7 @@ export class Application {
   };
   public pluginManager: PluginManager;
   public i18n: i18next;
+  public apiClient: APIClient;
   loading = true;
   maintained = false;
   maintaining = false;
@@ -64,6 +70,11 @@ export class Application {
     });
     this.scopes = merge(this.scopes, options.scopes);
     this.components = merge(this.components, options.components);
+    this.apiClient =
+      options.apiClient instanceof APIClient
+        ? options.apiClient
+        : new APIClient(options.apiClient);
+    this.apiClient.app = this;
     // this.i18n = options.i18n || i18n;
     this.router = new RouterManager(options.router, this);
     this.pluginManager = new PluginManager(options.plugins, false, this);
@@ -135,6 +146,16 @@ export class Application {
   }
 
   private addDefaultProviders() {
+    this.use(QueryClientProvider, {
+      client: new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+          },
+        },
+      }),
+    });
+    this.use(APIClientProvider, { apiClient: this.apiClient });
     /**
      * 初始化schema运行环境
      */
