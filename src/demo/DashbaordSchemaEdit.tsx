@@ -1,4 +1,5 @@
 import { AppMainProvider } from "../app-main/AppMainProvider";
+import { Application } from "../application";
 import { DashboardRoot } from "../dashboard";
 import { Hello } from "../dashboard/common/Hello";
 
@@ -8,6 +9,7 @@ import {
   SchemaComponentProvider,
   dashboardComponentMap,
 } from "../schema-component";
+import { HomeList } from "./HomeList";
 
 const schema = {
   ...DashboardRoot.schema,
@@ -110,3 +112,17 @@ export const DashbaordSchemaEdit = () => {
     </AppMainProvider>
   );
 };
+
+export const application = new Application({
+  router: {
+    type: "browser",
+    routes: {
+      home: {
+        path: "/",
+        Component: HomeList,
+      },
+    },
+  },
+});
+
+export default application.getRootComponent();

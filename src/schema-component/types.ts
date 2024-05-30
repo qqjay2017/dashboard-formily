@@ -22,3 +22,13 @@ export interface SchemaComponentOptionsProps extends PropsWithChildren {
     components?: SchemaReactComponents;
     inherit?: boolean;
 }
+
+
+export interface ISchemaComponentProvider {
+    designable?: boolean;
+    onDesignableChange?: (value: boolean) => void;
+    form?: Form;
+    scope?: any;
+    components?: SchemaReactComponents;
+    children?: React.ReactNode;
+}

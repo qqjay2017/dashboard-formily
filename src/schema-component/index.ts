@@ -5,3 +5,4 @@ export * from './SchemaComponentProvider'
 
 export * from './widgets'
 export * from './antd'
+export * from './types'
