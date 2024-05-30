@@ -28,6 +28,8 @@ export const allThemes = [
         token: technologyBlueToken,
         dark: technologyBlueDarkToken,
         light: technologyBlueLightToken,
+        colors: dark.color,
+
     },
     {
         name: "romanRed",
@@ -35,6 +37,8 @@ export const allThemes = [
         token: romanRedToken,
         dark: {},
         light: {},
+        colors: roma.color,
+
     },
 
 ]

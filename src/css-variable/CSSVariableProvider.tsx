@@ -20,7 +20,6 @@ export const CSSVariableProvider = ({ children }: PropsWithChildren) => {
     .toHexShortString();
 
   useEffect(() => {
-    console.log(token.nodeContentBgColor, "nnn");
     document.body.style.setProperty("--nb-spacing", `${token.marginLG}px`);
     document.body.style.setProperty(
       "--nb-designer-offset",

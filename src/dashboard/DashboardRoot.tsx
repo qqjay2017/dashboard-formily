@@ -82,7 +82,6 @@ export function DashboardRoot({
   children,
   ...props
 }: DashboardRootRendererProviderProps) {
-  console.log(props, "root props");
   const {
     breakpoints = defaultBreakpoints,
     designWidth = 1920,
@@ -145,10 +144,6 @@ export function DashboardRoot({
   // const { patch } = useDesignable()
   const DashboardRootDesigner = useDashboardRootDesigner();
 
-  console.log({
-    ...themeToken,
-    ...themeDarkOrLightToken,
-  });
   return (
     <GlobalThemeProvider
       theme={{

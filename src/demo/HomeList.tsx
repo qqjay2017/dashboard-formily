@@ -1,18 +1,20 @@
-import React from "react";
 import { APiWrap, useRequest } from "../api-client/hooks";
 import { get } from "lodash-es";
 import { CreateFormBtn } from "./components/CreateFormBtn";
 import { DashboardItem } from "./types";
-import { Badge, Button, Card, Col, Dropdown, Grid, Row, Space } from "antd";
+import { Col, Dropdown, Row } from "antd";
 import { css } from "@emotion/css";
-import { DashOutlined, MoreOutlined } from "@ant-design/icons";
+import { DashOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { showConfirmPromisify } from "../schema-component";
+import { useApp } from "../application/hooks";
 
 // const useHomeListStyle = createStyles({}=> {
 //   return css``
 // })
 
 export const HomeList = () => {
-  const { data } = useRequest<APiWrap<DashboardItem[]>>(
+  const { data, refetch } = useRequest<APiWrap<DashboardItem[]>>(
     "/huang-api/dashboard",
     {
       method: "GET",
@@ -25,6 +27,7 @@ export const HomeList = () => {
     <div className="container">
       <div
         className={css`
+          width: 100%;
           height: 50px;
           background-color: #fff;
           border-bottom: 1px solid #e4e4e5;
@@ -59,7 +62,7 @@ export const HomeList = () => {
         <Row gutter={16}>
           {list.map((dashboard) => (
             <Col className="gutter-row" key={dashboard.id} span={6}>
-              <FormCard dashboard={dashboard}></FormCard>
+              <FormCard dashboard={dashboard} refetch={refetch}></FormCard>
             </Col>
           ))}
         </Row>
@@ -68,7 +71,15 @@ export const HomeList = () => {
   );
 };
 
-function FormCard({ dashboard }: { dashboard: DashboardItem }) {
+function FormCard({
+  dashboard,
+  refetch,
+}: {
+  dashboard: DashboardItem;
+  refetch: Function;
+}) {
+  const navigate = useNavigate();
+  const { apiClient } = useApp();
   return (
     <div
       className={css`
@@ -94,6 +105,9 @@ function FormCard({ dashboard }: { dashboard: DashboardItem }) {
         `}
       >
         <div
+          onClick={() => {
+            navigate(`/design/${dashboard.id}`);
+          }}
           className={css`
             width: 100%;
             height: 176px;
@@ -124,6 +138,16 @@ function FormCard({ dashboard }: { dashboard: DashboardItem }) {
           </div>
           <Dropdown
             menu={{
+              onClick: async ({ key }) => {
+                if (key === "delete") {
+                  await showConfirmPromisify({});
+                  await apiClient.request({
+                    url: `/huang-api/dashboard/${dashboard.id}`,
+                    method: "delete",
+                  });
+                  refetch && refetch();
+                }
+              },
               items: [
                 {
                   key: "preview",
@@ -132,6 +156,10 @@ function FormCard({ dashboard }: { dashboard: DashboardItem }) {
                 {
                   key: "shared",
                   label: "分享",
+                },
+                {
+                  key: "delete",
+                  label: "删除",
                 },
               ],
             }}

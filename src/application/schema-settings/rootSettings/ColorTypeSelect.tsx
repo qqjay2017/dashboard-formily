@@ -1,28 +1,90 @@
-import React from 'react'
-import { allThemes } from '../../../dashboard-themes';
-import { Radio } from 'antd';
+import { allThemes } from "../../../dashboard-themes";
 
+import { css } from "@emotion/css";
 
 interface ColorTypeSelectProps {
-    value: string;
-    onChange: () => string;
+  value?: string;
+  onChange?: (str?: string) => string;
 }
-export const ColorTypeSelect = ({
-    value, onChange
-}: ColorTypeSelectProps) => {
-    return (
-
-        <Radio.Group
-            optionType="button"
-            buttonStyle="solid"
-            options={allThemes.map(theme => {
-                return {
-                    label: theme.zhName,
-                    value: theme.name
+export const ColorTypeSelect = ({ value, onChange }: ColorTypeSelectProps) => {
+  return (
+    <div
+      className={css`
+        margin-left: 0px;
+      `}
+    >
+      {allThemes.map((theme) => {
+        return (
+          <div
+            onClick={() => {
+              onChange && onChange(theme.name);
+            }}
+            key={theme.name}
+            className={css`
+              border-radius: 4px;
+              cursor: pointer;
+              padding: 12px 24px;
+              margin-bottom: 16px;
+              width: 330px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 1px solid
+                ${value === theme.name ? theme.colors[0] : "#ccc"};
+            `}
+          >
+            <div
+              className={css`
+                width: 60px;
+                text-align: left;
+                white-space: nowrap;
+                max-width: 100%;
+                overflow: hidden;
+              `}
+            >
+              {theme.zhName}
+            </div>
+            <div
+              className={css`
+                width: calc(100% - 60px);
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+              `}
+            >
+              {theme.colors.map((color, index) => {
+                if (index > 5) {
+                  return null;
                 }
-            })}
-            onChange={onChange}
-            value={value} />
-
-    )
-}
+                return (
+                  <div
+                    key={color + index}
+                    className={css`
+                      width: 20px;
+                      height: 20px;
+                      border-radius: 6px;
+                      background-color: ${color};
+                    `}
+                  ></div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+    // <Radio.Group
+    //   optionType="button"
+    //   buttonStyle="solid"
+    //   options={allThemes.map((theme) => {
+    //     return {
+    //       label: theme.zhName,
+    //       value: theme.name,
+    //     };
+    //   })}
+    //   onChange={onChange}
+    //   value={value}
+    // />
+  );
+};

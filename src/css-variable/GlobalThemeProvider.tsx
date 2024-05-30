@@ -41,10 +41,7 @@ export const GlobalThemeProvider = ({
   const getCurrentSettingTheme = useCallback(() => {
     return currentSettingThemeRef.current;
   }, []);
-  console.log(
-    addCustomAlgorithmToTheme(theme as any),
-    "addCustomAlgorithmToTheme(theme as any)"
-  );
+
   const value = useMemo(() => {
     return {
       theme: addCustomAlgorithmToTheme(theme as any),

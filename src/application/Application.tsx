@@ -94,7 +94,7 @@ export class Application {
       await this.pm.load();
     } catch (error) {
       loadFailed = true;
-      console.log(loadFailed, "loadFailed");
+
       const others = error?.response?.data?.error ||
         error?.response?.data?.errors?.[0] || { message: error?.message };
       this.error = {

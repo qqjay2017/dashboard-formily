@@ -1,14 +1,8 @@
-import { AppMainProvider } from "../app-main/AppMainProvider";
 import { Application } from "../application";
 import { DashboardRoot } from "../dashboard";
-import { Hello } from "../dashboard/common/Hello";
 
-import {
-  ClassicFrame,
-  SchemaComponent,
-  SchemaComponentProvider,
-  dashboardComponentMap,
-} from "../schema-component";
+import { ClassicFrame } from "../schema-component";
+import { DesignPage } from "./DesignPage";
 import { HomeList } from "./HomeList";
 
 const schema = {
@@ -97,22 +91,6 @@ const schema = {
   },
 };
 
-export const DashbaordSchemaEdit = () => {
-  return (
-    <AppMainProvider>
-      <SchemaComponentProvider designable={true}>
-        <SchemaComponent
-          components={{
-            ...(dashboardComponentMap as any),
-            Hello,
-          }}
-          schema={schema}
-        />
-      </SchemaComponentProvider>
-    </AppMainProvider>
-  );
-};
-
 export const application = new Application({
   router: {
     type: "browser",
@@ -120,6 +98,10 @@ export const application = new Application({
       home: {
         path: "/",
         Component: HomeList,
+      },
+      design: {
+        path: "/design/:id",
+        Component: DesignPage,
       },
     },
   },
