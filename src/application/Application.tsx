@@ -40,6 +40,7 @@ export interface ApplicationOptions {
 }
 
 export class Application {
+  public neme;
   public providers: ComponentAndProps[] = [];
   public notification;
 
@@ -84,6 +85,7 @@ export class Application {
     this.addReactRouterComponents();
     this.addProviders(options.providers || []);
     this.addRoutes();
+    this.neme = "app";
   }
 
   async load() {
@@ -105,6 +107,13 @@ export class Application {
     } finally {
       this.loading = false;
     }
+  }
+
+  getOptions() {
+    return this.options;
+  }
+  getName() {
+    return "appapp";
   }
 
   addProviders(providers: (ComponentType | [ComponentType, any])[]) {
@@ -158,6 +167,10 @@ export class Application {
     this.use(APIClientProvider, { apiClient: this.apiClient });
     /**
      * 初始化schema运行环境
+     */
+    /**
+     *   this.use(GlobalThemeProvider);
+    this.use(CSSVariableProvider);
      */
     this.use(AppSchemaComponentProvider, {
       designable: this.options.designable,

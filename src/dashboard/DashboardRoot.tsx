@@ -3,11 +3,12 @@ import React, {
   PropsWithChildren,
   useContext,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
 import { useBreakpoints } from "./hooks";
-
+import Selecto from "react-selecto";
 import { DashboardComponentContext, DashboardRootContext } from "./context";
 import { defaultBreakpoints, sizeFormat } from "./utils";
 import { useUpdate } from "ahooks";
@@ -96,7 +97,7 @@ export function DashboardRoot({
     isDarkTheme,
     ...otherProps
   } = props;
-
+  const selectoRef = useRef<Selecto>(null);
   const { designable: defaultDesignable, ...restCtx } = useContext(
     DashboardComponentContext
   );
@@ -201,6 +202,85 @@ export function DashboardRoot({
               >
                 <DashboardRootDesigner />
                 {children}
+                <Selecto
+                  ref={selectoRef}
+                  // dragContainer={container.current}
+                  selectableTargets={[".anticon .anticon-menu .cube"]}
+                  hitRate={0}
+                  selectByClick={true}
+                  selectFromInside={false}
+                  toggleContinueSelect={["shift"]}
+                  ratio={0}
+                  onDragStart={(e) => {
+                    console.log(e, "e");
+                    // const moveable = moveableRef.current!;
+                    // const target = e.inputEvent.target;
+                    // const flatted = deepFlat(targets);
+                    // if (
+                    //   target.tagName === "BUTTON" ||
+                    //   moveable.isMoveableElement(target) ||
+                    //   flatted.some((t) => t === target || t.contains(target))
+                    // ) {
+                    //   e.stop();
+                    // }
+                    // e.data.startTargets = targets;
+                  }}
+                  onSelect={(e) => {
+                    console.log(e, "e");
+                    // const { startAdded, startRemoved, isDragStartEnd } = e;
+                    // if (isDragStartEnd) {
+                    //   return;
+                    // }
+                    // const nextChilds = groupManager.selectSameDepthChilds(
+                    //   e.data.startTargets,
+                    //   startAdded,
+                    //   startRemoved
+                    // );
+                    // setSelectedTargets(nextChilds.targets());
+                  }}
+                  onSelectEnd={(e) => {
+                    console.log(e, "e");
+                    // const {
+                    //   isDragStartEnd,
+                    //   isClick,
+                    //   added,
+                    //   removed,
+                    //   inputEvent,
+                    // } = e;
+                    // const moveable = moveableRef.current!;
+                    // if (isDragStartEnd) {
+                    //   inputEvent.preventDefault();
+                    //   moveable.waitToChangeTarget().then(() => {
+                    //     moveable.dragStart(inputEvent);
+                    //   });
+                    // }
+                    // let nextChilds: TargetList;
+                    // if (isDragStartEnd || isClick) {
+                    //   if (isCommand) {
+                    //     nextChilds = groupManager.selectSingleChilds(
+                    //       targets,
+                    //       added,
+                    //       removed
+                    //     );
+                    //   } else {
+                    //     nextChilds = groupManager.selectCompletedChilds(
+                    //       targets,
+                    //       added,
+                    //       removed,
+                    //       isShift
+                    //     );
+                    //   }
+                    // } else {
+                    //   nextChilds = groupManager.selectSameDepthChilds(
+                    //     e.data.startTargets,
+                    //     added,
+                    //     removed
+                    //   );
+                    // }
+                    // e.currentTarget.setSelectedTargets(nextChilds.flatten());
+                    // setSelectedTargets(nextChilds.targets());
+                  }}
+                ></Selecto>
               </div>
             </DashboardComponentContext.Provider>
           </DashboardRootContext.Provider>

@@ -1,5 +1,6 @@
 import { Application } from "../application";
 import { DashboardRoot } from "../dashboard";
+import { Hello } from "../dashboard/common/Hello";
 
 import { ClassicFrame } from "../schema-component";
 import { DesignPage } from "./DesignPage";
@@ -92,6 +93,9 @@ const schema = {
 };
 
 export const application = new Application({
+  components: {
+    Hello,
+  },
   router: {
     type: "browser",
     routes: {

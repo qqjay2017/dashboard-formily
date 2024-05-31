@@ -8,6 +8,7 @@ import { APiWrap, useRequest } from "../api-client/hooks";
 import { useParams } from "react-router-dom";
 import { DashboardItem } from "./types";
 import { get } from "lodash-es";
+import { Hello } from "../dashboard/common/Hello";
 
 export const DesignPage = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ export const DesignPage = () => {
         <SchemaComponent
           components={{
             ...(dashboardComponentMap as any),
+            Hello,
           }}
           schema={JSON.parse(schema)}
         />

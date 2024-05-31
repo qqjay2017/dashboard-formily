@@ -15,6 +15,10 @@ export interface SchemaComponentContextValue {
     resetForm?: () => void;
     refresh?: () => void;
     distributed?: boolean;
+    designable?: boolean;
+    scope?: any;
+    components?: any;
+    setDesignable?: (flag?: boolean) => void
 }
 
 export interface SchemaComponentOptionsProps extends PropsWithChildren {

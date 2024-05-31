@@ -21,6 +21,7 @@ const SchemaComponentProviderWithLocalStorageState: React.FC<
       defaultValue: props.designable ? true : false,
     }
   );
+
   return (
     <SchemaComponentProvider
       {...props}
@@ -35,6 +36,8 @@ const SchemaComponentProviderWithLocalStorageState: React.FC<
 export const AppSchemaComponentProvider: React.FC<ISchemaComponentProvider> = (
   props
 ) => {
+  console.log(props, "props2");
+
   if (typeof props.designable === "boolean") {
     return <SchemaComponentProvider {...props} />;
   }
